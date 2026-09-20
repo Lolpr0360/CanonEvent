@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canon Event — A Multiverse Roshambo Game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Karla:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #241C3F;
+    --ink-soft: #4A4166;
+    --bg: #F1EDFB;
+    --panel: #FBFAFF;
+    --panel-edge: #DAD2F2;
+    --violet: #6C4AB6;
+    --violet-deep: #4C2F91;
+    --yellow: #E8A317;
+    --pink: #D63E7B;
+    --cyan: #1B9E8C;
+    --focus: #4C2F91;
+    --font-display: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+    --font-body: "Karla", "Avenir Next", "Segoe UI", sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #ECE7FB;
+      --ink-soft: #B8AFDB;
+      --bg: #16112A;
+      --panel: #1E1838;
+      --panel-edge: #382C63;
+      --violet: #9D82F2;
+      --violet-deep: #C4B2FF;
+      --yellow: #F4C430;
+      --pink: #FF6FA0;
+      --cyan: #4FE3CD;
+      --focus: #C4B2FF;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #ECE7FB;
+    --ink-soft: #B8AFDB;
+    --bg: #16112A;
+    --panel: #1E1838;
+    --panel-edge: #382C63;
+    --violet: #9D82F2;
+    --violet-deep: #C4B2FF;
+    --yellow: #F4C430;
+    --pink: #FF6FA0;
+    --cyan: #4FE3CD;
+    --focus: #C4B2FF;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--violet-deep); }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+
+  /* ---------- NAV ---------- */
+  nav.tabs {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--panel-edge);
+  }
+  .tabs-inner {
+    max-width: 920px; margin: 0 auto; padding: 10px 20px;
+    display: flex; gap: 6px; overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .tabs-inner a {
+    flex: 0 0 auto;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.86rem;
+    text-decoration: none;
+    color: var(--ink-soft);
+    padding: 7px 13px;
+    border-radius: 100px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    transition: color .15s, border-color .15s;
+  }
+  .tabs-inner a:hover, .tabs-inner a:focus-visible { color: var(--ink); border-color: var(--panel-edge); }
+
+  /* ---------- HERO ---------- */
+  header.hero {
+    padding: 64px 0 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .portal {
+    position: absolute; top: -180px; right: -160px;
+    width: 420px; height: 420px; border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, var(--violet) 0%, transparent 70%);
+    opacity: .35;
+    filter: blur(10px);
+    animation: pulse 7s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) { .portal { animation: none; } }
+  @keyframes pulse { 0%,100% { transform: scale(1); opacity: .3; } 50% { transform: scale(1.08); opacity: .45; } }
+
+  .ticket-tag {
+    font-family: var(--font-display);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: var(--violet-deep);
+    background: color-mix(in srgb, var(--violet) 14%, transparent);
+    border: 1px solid var(--panel-edge);
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 22px;
+  }
+  h1.title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.6rem, 7vw, 4.4rem);
+    line-height: .98;
+    margin: 0 0 18px;
+    max-width: 11ch;
+  }
+  .lede {
+    font-size: 1.18rem;
+    color: var(--ink-soft);
+    max-width: 54ch;
+    margin: 0 0 28px;
+  }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 22px;
+    font-family: var(--font-display); font-size: .82rem; color: var(--ink-soft);
+  }
+  .hero-meta strong { color: var(--ink); display: block; font-size: 1rem; margin-bottom: 2px; }
+
+  /* ---------- SECTIONS ---------- */
+  section { padding: 56px 0; border-top: 1px solid var(--panel-edge); scroll-margin-top: 70px; }
+  section:first-of-type { border-top: none; }
+  h2.head {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    margin: 0 0 8px;
+  }
+  .kicker { color: var(--pink); font-family: var(--font-display); font-weight: 500; font-size: .82rem; margin: 0 0 6px; }
+  .section-intro { color: var(--ink-soft); max-width: 62ch; margin: 0 0 32px; font-size: 1.02rem; }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--panel-edge);
+    border-radius: 14px;
+    padding: 22px 24px;
+  }
+  .grid { display: grid; gap: 16px; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+  .stat-card h3 { margin: 0 0 6px; font-family: var(--font-display); font-size: 1.05rem; }
+  .stat-card p { margin: 0; color: var(--ink-soft); font-size: .95rem; }
+  .stat-card { border-left: 4px solid var(--violet); }
+  .stat-card.brains { border-color: var(--cyan); }
+  .stat-card.bravado { border-color: var(--pink); }
+
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--panel-edge); vertical-align: top; }
+  th { font-family: var(--font-display); font-weight: 500; color: var(--ink-soft); font-size: .82rem; }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--panel-edge); border-radius: 14px; }
+  .table-wrap table { margin: 0; }
+  .table-wrap th, .table-wrap td { border-bottom: 1px solid var(--panel-edge); }
+  .table-wrap tr:last-child td { border-bottom: none; }
+
+  .pill { display: inline-block; font-family: var(--font-display); font-size: .72rem; font-weight: 700; padding: 3px 10px; border-radius: 100px; background: color-mix(in srgb, var(--violet) 16%, transparent); color: var(--violet-deep); }
+
+  .loop {
+    display: grid; gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    counter-reset: loopstep;
+  }
+  .loop-step {
+    counter-increment: loopstep;
+    background: var(--panel); border: 1px solid var(--panel-edge); border-radius: 12px;
+    padding: 16px; position: relative;
+  }
+  .loop-step::before {
+    content: counter(loopstep);
+    font-family: var(--font-display); font-weight: 700; font-size: .8rem;
+    color: var(--panel); background: var(--violet);
+    width: 22px; height: 22px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 10px;
+  }
+  .loop-step h4 { margin: 0 0 4px; font-family: var(--font-display); font-size: .95rem; }
+  .loop-step p { margin: 0; font-size: .88rem; color: var(--ink-soft); }
+
+  .zone-card { border-radius: 14px; border: 1px solid var(--panel-edge); background: var(--panel); padding: 20px; }
+  .zone-card .tag { font-family: var(--font-display); font-weight: 700; font-size: .72rem; color: var(--cyan); }
+  .zone-card h3 { margin: 6px 0 6px; font-family: var(--font-display); font-size: 1.1rem; }
+  .zone-card p { margin: 0 0 6px; color: var(--ink-soft); font-size: .92rem; }
+  .zone-card .twist { font-size: .86rem; }
+  .zone-card .twist strong { color: var(--pink); }
+
+  button.btn {
+    font-family: var(--font-display); font-weight: 700; font-size: .88rem;
+    background: var(--violet); color: #fff; border: none;
+    padding: 11px 18px; border-radius: 100px; cursor: pointer;
+    transition: transform .1s ease;
+  }
+  button.btn:hover { transform: translateY(-1px); }
+  button.btn:active { transform: translateY(0); }
+  button.btn.secondary { background: transparent; color: var(--violet-deep); border: 1.5px solid var(--panel-edge); }
+
+  .generator-out {
+    margin-top: 14px; padding: 16px 18px; border-radius: 12px;
+    background: color-mix(in srgb, var(--violet) 10%, var(--panel));
+    border: 1px dashed var(--panel-edge);
+    font-family: var(--font-display); font-size: 1.05rem;
+    min-height: 1.4em;
+  }
+
+  /* ---------- SHEET FORM ---------- */
+  .sheet-field label {
+    display: block; font-family: var(--font-display); font-size: .78rem;
+    color: var(--ink-soft); margin-bottom: 5px;
+  }
+  .sheet-field input, .sheet-field textarea, .sheet-field select {
+    width: 100%; padding: 9px 11px; border-radius: 8px;
+    border: 1px solid var(--panel-edge); background: var(--bg); color: var(--ink);
+    font-family: var(--font-body); font-size: .95rem;
+  }
+  .sheet-field textarea { resize: vertical; min-height: 52px; }
+  .sheet-field { margin-bottom: 14px; }
+  .dot-row { display: flex; gap: 6px; margin-top: 4px; }
+  .dot {
+    width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--panel-edge);
+    background: transparent; cursor: pointer; padding: 0;
+  }
+  .dot.filled { background: var(--violet); border-color: var(--violet); }
+  .save-row { display: flex; align-items: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .save-msg { font-size: .85rem; color: var(--cyan); }
+
+  footer { padding: 40px 0 70px; color: var(--ink-soft); font-size: .85rem; text-align: center; }
+
+  details.gm-only {
+    margin-top: 12px; border: 1px dashed var(--panel-edge); border-radius: 10px;
+    padding: 10px 14px; background: color-mix(in srgb, var(--pink) 6%, transparent);
+  }
+  details.gm-only summary {
+    cursor: pointer; font-family: var(--font-display); font-weight: 700; font-size: .78rem;
+    color: var(--pink); list-style: none;
+  }
+  details.gm-only summary::-webkit-details-marker { display: none; }
+  details.gm-only summary::before { content: "▸ "; }
+  details.gm-only[open] summary::before { content: "▾ "; }
+  details.gm-only .gm-body { margin-top: 8px; font-size: .88rem; color: var(--ink-soft); }
+  .item-card { border-radius: 14px; border: 1px solid var(--panel-edge); background: var(--panel); padding: 18px 20px; }
+  .item-card h3 { margin: 0 0 6px; font-family: var(--font-display); font-size: 1.05rem; }
+  .item-card .flavor { margin: 0; color: var(--ink-soft); font-size: .95rem; font-style: italic; }
+
+  ::selection { background: var(--violet); color: #fff; }
+</style>
+</head>
+<body>
+
+<nav class="tabs">
+  <div class="tabs-inner">
+    <a href="#pitch">The Pitch</a>
+    <a href="#engine">Resolution</a>
+    <a href="#zones">Body Zones</a>
+    <a href="#gear">Enhancements</a>
+    <a href="#character">Your Character</a>
+    <a href="#economy">Fandom & Chips</a>
+    <a href="#multiverse">The Multiverse</a>
+    <a href="#loop">Session Flow</a>
+    <a href="#gmtools">GM Toolkit</a>
+    <a href="#sheet">Character Sheet</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header class="hero" id="pitch">
+  <div class="portal"></div>
+  <span class="ticket-tag">ADMIT ONE — PARTY OF 4–5</span>
+  <h1 class="title">Canon Event</h1>
+  <p class="lede">You're not an elf. You're not a fighter. You're <em>you</em>, dragged sideways into a story that isn't playing by one genre's rules — somewhere fantasy and sci-fi (and who knows what else) start bleeding into each other. Your body is tracked zone by zone instead of one HP bar, and everything — a fight, a lie, a locked door — settles with a Rock-Paper-Scissors Clash.</p>
+  <div class="hero-meta">
+    <div><strong>4–5 Players</strong>Play yourselves, literally</div>
+    <div><strong>All RPS</strong>Every roll retired — Clashes only</div>
+    <div><strong>Body Zones</strong>No HP bar, no death saves</div>
+  </div>
+</header>
+
+<section id="engine">
+  <p class="kicker">The Core Mechanic</p>
+  <h2 class="head">Resolution: The Clash Engine</h2>
+  <p class="section-intro">Everything resolves with Rock-Paper-Scissors against the GM — no dice anywhere. Non-combat moments use a single Event Clash. Combat splits into an Attack sequence and a Defence sequence, below.</p>
+
+  <div class="grid grid-3" style="margin-bottom:28px;">
+    <div class="card stat-card">
+      <h3>Brawn</h3>
+      <p>Physical action — fights, chases, feats of strength, anything your body has to do.</p>
+    </div>
+    <div class="card stat-card brains">
+      <h3>Brains</h3>
+      <p>Puzzles, tech, lore, magic-logic, reading a room's hidden mechanics.</p>
+    </div>
+    <div class="card stat-card bravado">
+      <h3>Bravado</h3>
+      <p>Charm, style, bluffing, performance — making people feel something on purpose.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-display); font-size:1.05rem;">Non-Combat Actions — The Event Clash</h3>
+  <p class="section-intro" style="margin-bottom:12px;">Every non-combat contested moment — a lie, a locked door, a first date with a sentient hologram — resolves with a single RPS throw against the GM.</p>
+  <div class="table-wrap" style="margin-bottom:16px;">
+    <table>
+      <tr><th colspan="2" style="font-family:var(--font-display); font-weight:700; color:var(--ink);">Event Clash</th></tr>
+      <tr><td style="width:30%;">You win</td><td>Success — full effect.</td></tr>
+      <tr><td>Draw</td><td>Stalemate or a second chance — the GM's call, depending on the tier below: either nothing changes and the tension holds, or you get a follow-up throw with a complication attached.</td></tr>
+      <tr><td>You lose</td><td>Failure — the tier's consequence applies.</td></tr>
+    </table>
+  </div>
+  <p class="section-intro" style="margin-bottom:16px;">Before the throw, the GM names the tier out loud — it sets how forgiving a Draw is and how much a Loss costs.</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Tier</th><th>Used for</th><th>On a Draw</th><th>On a Loss</th></tr>
+      <tr><td><span class="pill">Quick Beat</span></td><td>Flavor actions, minor checks</td><td>Stalemate, no cost</td><td>Shrug it off, minor cost</td></tr>
+      <tr><td><span class="pill">Challenge</span></td><td>Standard obstacles, most scenes</td><td>Second chance, minor complication attached</td><td>A real setback or cost</td></tr>
+      <tr><td><span class="pill">Showdown</span></td><td>Set-pieces, mini-bosses</td><td>Second chance, but a real complication attached</td><td>Major complication or harm</td></tr>
+      <tr><td><span class="pill">Legendary Clash</span></td><td>The finale, the big bad</td><td>Stalemate holds — no second chances here</td><td>Session-defining defeat</td></tr>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-display); font-size:1.05rem; margin-top:34px;">Combat — Attack &amp; Defence</h3>
+  <p class="section-intro" style="margin-bottom:16px;">No dice in a fight. Combat splits into two different sequences depending on whether you're swinging or being swung at — each uses RPS against the GM.</p>
+
+  <h4 style="font-family:var(--font-display); font-size:.95rem; margin:20px 0 8px;">When you attack</h4>
+  <div class="table-wrap" style="margin-bottom:8px;">
+    <table>
+      <tr><th colspan="2" style="font-family:var(--font-display); font-weight:700; color:var(--ink);">Throw 1 — The Outcome Clash</th></tr>
+      <tr><td style="width:30%;">You win</td><td>Hit connects clean — full damage at the attack's Bite tier.</td></tr>
+      <tr><td>Draw</td><td>The enemy blocks, but takes partial damage — Tier 1, 'Tis But a Scratch.</td></tr>
+      <tr><td>You lose</td><td>The enemy counters or dodges — the GM's call. On a counter, their Bite tier lands on you automatically, no extra throw.</td></tr>
+    </table>
+  </div>
+  <p class="section-intro" style="margin:10px 0 20px; font-size:.9rem;">Throw 2 still applies exactly as below — run it whenever a hit actually landed (a Win, or the partial damage on a Draw). Skip it if the enemy fully dodges.</p>
+
+  <div class="table-wrap" style="margin-bottom:16px;">
+    <table>
+      <tr><th colspan="2" style="font-family:var(--font-display); font-weight:700; color:var(--ink);">Throw 2 — The Location Clash</th></tr>
+      <tr><td style="width:30%;">You win</td><td>You call the location outright.</td></tr>
+      <tr><td>Draw</td><td>It lands on the zone adjacent to the one you called.</td></tr>
+      <tr><td>You lose</td><td>The strike goes wild and never reaches the target — whoever swung takes a Tier 1 Wince themselves instead.</td></tr>
+    </table>
+  </div>
+  <p class="section-intro" style="margin-bottom:16px; font-size:.9rem;"><strong style="color:var(--ink);">Adjacency:</strong> Torso is adjacent to everything (both arms, both legs, head, wings, tail). Every limb's only neighbor is Torso.</p>
+
+  <div class="card" style="margin-bottom:24px; border-left:4px solid var(--cyan);">
+    <strong style="font-family:var(--font-display);">On purpose, not a bug:</strong>
+    <span style="color:var(--ink-soft);"> you can win Throw 1 clean and still lose Throw 2. That's a real hit that goes wrong in the follow-through — you connected, but the finish is yours to eat instead.</span>
+  </div>
+
+  <h4 style="font-family:var(--font-display); font-size:.95rem; margin:24px 0 8px;">When you defend</h4>
+  <p class="section-intro" style="margin-bottom:10px;">A single throw, no Throw 2 — for now, the GM narrates where an incoming hit lands.</p>
+  <div class="table-wrap" style="margin-bottom:20px;">
+    <table>
+      <tr><th colspan="2" style="font-family:var(--font-display); font-weight:700; color:var(--ink);">Defence Clash</th></tr>
+      <tr><td style="width:30%;">You win</td><td>Your choice: Counter Attack (your Bite tier lands on them automatically, no extra throw) or Dodge (you take nothing).</td></tr>
+      <tr><td>Draw</td><td>You stand your ground and take the hit at full Bite tier — a shield or Enhancement on that zone absorbs it first, if you have one.</td></tr>
+      <tr><td>You lose</td><td>You get hit — full Bite tier, GM's call on location.</td></tr>
+    </table>
+  </div>
+
+  <h4 style="font-family:var(--font-display); font-size:.95rem; margin:24px 0 8px;">Bite &amp; damage</h4>
+  <p class="section-intro" style="margin-bottom:12px;">The GM sets an attack's Bite before the Clash — a jab starts at Tier 1, a heavy weapon at Tier 3, something devastating at Tier 4. See <a href="#zones">Body Zones</a> for the full Wince Scale, and <a href="#gear">Enhancements</a> for how gear soaks a hit before the zone does.</p>
+
+  <div class="card" style="margin-bottom:24px; border-left:4px solid var(--yellow);">
+    <strong style="font-family:var(--font-display);">Multiple zones at once:</strong>
+    <span style="color:var(--ink-soft);"> an explosion, a combo, or a kaiju swipe can hit several zones in one action. The GM names every zone affected and runs the appropriate Clash(es) for each — or, for speed against mooks, just narrates the spread directly without extra throws.</span>
+  </div>
+
+  <h3 style="font-family:var(--font-display); font-size:1.05rem; margin-top:30px;">Showdown Clashes</h3>
+  <p class="section-intro" style="margin-bottom:12px;">The same Event Clash, run player-versus-player instead of against the GM — for face-to-face beats between two named characters: banter battles, arm wrestling, staring contests, a villain's monologue duel.</p>
+
+  <h3 style="font-family:var(--font-display); font-size:1.05rem; margin-top:30px;">Edge Tokens</h3>
+  <p class="section-intro" style="margin-bottom:12px;">Edge Moves aren't picked once and locked in — they're assigned by the GM, Zone by Zone, based on what actually happened to your character.</p>
+  <div class="card" style="margin-bottom:16px; border-left:4px solid var(--yellow);">
+    <strong style="font-family:var(--font-display);">How assignment works:</strong>
+    <span style="color:var(--ink-soft);"> at the start of each Zone, the GM looks back at what a character did and went through in the last one — their actions, wins, losses, close calls — and assigns them the Edge category that fits the story. That's their Edge Move until the next Zone.</span>
+  </div>
+  <div class="card" style="margin-bottom:16px; border-left:4px solid var(--pink);">
+    <strong style="font-family:var(--font-display);">Challenging the Assignment:</strong>
+    <span style="color:var(--ink-soft);"> if a player thinks the GM's pick doesn't fit, they can challenge it on the spot. That sends it to a vote — the rest of the table decides whether the assignment sticks. Majority rules.</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Edge Move</th><th>What it does</th></tr>
+      <tr><td>ADHD</td><td>Copy the last throw you made against this same opponent, no new throw needed.</td></tr>
+      <tr><td>Schizophrenia</td><td>Ask the GM one question about the scene before you interact — their answer may or may not be true.</td></tr>
+      <tr><td>Depression</td><td>If you lose two Clashes in a row, your next loss automatically counts as a Win.</td></tr>
+      <tr><td>Kleptomania</td><td>Double the outcome of your throw.</td></tr>
+      <tr><td>Anxiety</td><td>Redo your throw once, and keep the new result.</td></tr>
+      <tr><td>angagnangnagnnag</td><td>Copy the last throw you made in this same situation — works on a repeat scenario, not just a repeat opponent.</td></tr>
+      <tr><td>Normal</td><td>Once per session, borrow one Edge Token from each other player at the table.</td></tr>
+    </table>
+  </div>
+
+</section>
+
+<section id="zones">
+  <p class="kicker">Health &amp; Turn Order</p>
+  <h2 class="head">Body Zones</h2>
+  <p class="section-intro">No HP bar, no initiative roll, no death saving throws. A body is six zones, each with its own small pool, and turn order runs on who's got the spotlight, not a die roll.</p>
+
+  <h3 style="font-family:var(--font-display); font-size:1.05rem;">Spotlight Order (no initiative throw)</h3>
+  <p class="section-intro" style="margin-bottom:20px;">The GM opens the scene with whoever's action kicked it off. When a character's turn ends, that player points to who goes next — any PC or named NPC. Mooks don't get individual turns; the GM narrates their whole wave as one beat after each full round.</p>
+
+  <h3 style="font-family:var(--font-display); font-size:1.05rem;">Zone Pools &amp; Effects</h3>
+  <div class="table-wrap" style="margin-bottom:20px;">
+    <table>
+      <tr><th>Zone</th><th>Pool</th><th>At 0 HP</th></tr>
+      <tr><td>Torso</td><td>10</td><td>Downed — starts the Fade Clock (below)</td></tr>
+      <tr><td>Head</td><td>6</td><td>Dazed &amp; Out — unconscious immediately, no throw needed</td></tr>
+      <tr><td>Each Arm</td><td>6</td><td>Disabled, drops anything held; Disadvantage on anything needing it</td></tr>
+      <tr><td>Each Leg</td><td>6</td><td>Disabled; Disadvantage on movement/dodge, speed halved. Both legs out = prone</td></tr>
+      <tr><td>Wings (if any)</td><td>5</td><td>Grounded</td></tr>
+      <tr><td>Tail (if any)</td><td>5</td><td>Disadvantage on balance/agility</td></tr>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-display); font-size:1.05rem;">The Wince Scale</h3>
+  <p class="section-intro" style="margin-bottom:12px;">Which zone gets hit is decided by the Location Clash in <a href="#engine">Resolution</a>. How much it costs is decided by this scale — apply the tier that matches the attack's Bite on a Win, or Tier 1 on a Draw.</p>
+  <div class="table-wrap" style="margin-bottom:24px;">
+    <table>
+      <tr><th>Tier</th><th>Name</th><th>HP lost</th></tr>
+      <tr><td>1</td><td>'Tis But a Scratch</td><td>1</td></tr>
+      <tr><td>2</td><td>Ha! That Tickled</td><td>2</td></tr>
+      <tr><td>3</td><td>Ooh, That Stung</td><td>3</td></tr>
+      <tr><td>4</td><td>Okay, That's Gonna Leave a Mark</td><td>4</td></tr>
+      <tr><td>5</td><td>Well, That Wasn't There a Second Ago</td><td>5–6</td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-bottom:24px; border-left:4px solid var(--yellow);">
+    <strong style="font-family:var(--font-display);">Multiple zones at once:</strong>
+    <span style="color:var(--ink-soft);"> an explosion, a combo, or a kaiju swipe can hit several zones in one action. The GM names every zone affected and runs a Location Clash for each — or, for speed against mooks, just narrates the spread directly.</span>
+  </div>
+
+  <div class="card" style="border-left:4px solid var(--pink);">
+    <strong style="font-family:var(--font-display);">The Fade Clock — replacing death saves:</strong>
+    <span style="color:var(--ink-soft);"> when Torso hits 0, the character is Downed with a 3-round clock running. Any ally can spend their turn on an Event Clash to stabilize them. If nobody manages it in time, that character is <strong>Written Out of the Episode</strong> — hurt, offscreen, back next session — rather than dead outright.</span>
+  </div>
+  <div class="card" style="margin-top:14px; border-left:4px solid var(--yellow);">
+    <strong style="font-family:var(--font-display);">Optional Harsh Mode:</strong>
+    <span style="color:var(--ink-soft);"> if your table wants real stakes, a second Torso-zero within the same story arc is permanent instead of a Fade Clock.</span>
+  </div>
+</section>
+
+<section id="gear">
+  <p class="kicker">Gear</p>
+  <h2 class="head">Enhancements</h2>
+  <p class="section-intro">Enhancements are items that guard a specific body part and take damage before you do. Players only ever see the flavor — the real numbers live with the GM.</p>
+
+  <div class="grid grid-3" style="margin-bottom:24px;">
+    <div class="card"><h3 style="font-family:var(--font-display); margin-top:0; font-size:1rem;">1 · It absorbs first</h3><p style="color:var(--ink-soft); font-size:.92rem; margin:0;">Wince damage to a covered body part hits the item's hidden capacity before it hits you.</p></div>
+    <div class="card"><h3 style="font-family:var(--font-display); margin-top:0; font-size:1rem;">2 · It breaks visibly</h3><p style="color:var(--ink-soft); font-size:.92rem; margin:0;">Once its hidden capacity is spent, the GM narrates the break — a strap snapping, a screen splitting. That's the only signal players get.</p></div>
+    <div class="card"><h3 style="font-family:var(--font-display); margin-top:0; font-size:1rem;">3 · No numbers, ever</h3><p style="color:var(--ink-soft); font-size:.92rem; margin:0;">Players get a name and a vague sentence. Capacity, coverage, and break conditions stay on the GM's side.</p></div>
+  </div>
+
+  <p class="section-intro" style="margin-bottom:12px;">A worked example of the split — what the player sees, versus what the GM actually tracks. The GM-only blocks below are a table-etiquette convention, not real security: anyone can technically click them open, so keep anything you truly don't want peeked at in your own private notes instead of this shared guide.</p>
+
+  <div class="grid grid-3">
+    <div class="item-card">
+      <h3>Nan's Cardigan</h3>
+      <p class="flavor">"It's itchy, it's ugly, and somehow you always feel a little safer wearing it."</p>
+      <details class="gm-only">
+        <summary>GM Eyes Only</summary>
+        <div class="gm-body">Covers: Torso.<br>Soaks 3 points total, then falls apart at the seams.<br>Break cue: a button pops off mid-scene.</div>
+      </details>
+    </div>
+    <div class="item-card">
+      <h3>Scuffed Skate Helmet</h3>
+      <p class="flavor">"Looks like it's already survived one bad idea. Might survive another."</p>
+      <details class="gm-only">
+        <summary>GM Eyes Only</summary>
+        <div class="gm-body">Covers: Head.<br>Fully no-sells one Tier 1–2 hit, then cracks and stops working entirely.<br>Break cue: a visible spiderweb crack after the first real hit.</div>
+      </details>
+    </div>
+    <div class="item-card">
+      <h3>Dad's Old Watch</h3>
+      <p class="flavor">"Heavier than it looks. You're not sure why you still wear it."</p>
+      <details class="gm-only">
+        <summary>GM Eyes Only</summary>
+        <div class="gm-body">Covers: Weapon arm only.<br>Reduces every Wince tier to that arm by one step, permanently, no capacity to run out.<br>Break cue: none — it's built to last, which is its own kind of story hook.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:24px; border-left:4px solid var(--yellow);">
+    <strong style="font-family:var(--font-display);">Making your own:</strong>
+    <span style="color:var(--ink-soft);"> pick a body part it covers, a hidden capacity or reduction, and a break cue you'll actually remember to narrate. Then write the player one honest-sounding but non-numeric sentence about it. That's the whole item.</span>
+  </div>
+</section>
+
+<section id="character">
+  <p class="kicker">Character Creation</p>
+  <h2 class="head">You, But Statted</h2>
+  <p class="section-intro">There's no character to invent — there's a version of you to translate. Five quick steps, about ten minutes each.</p>
+
+  <div class="loop">
+    <div class="loop-step"><h4>The You Translation</h4><p>Distribute 8 dots across Brawn / Brains / Bravado (1–4 each, none at zero). Answer honestly, not aspirationally.</p></div>
+    <div class="loop-step"><h4>Genre License</h4><p>Pick your home genre — your comfort zone. There, you get +1 free Edge Token of any type per scene.</p></div>
+    <div class="loop-step"><h4>Signature Move</h4><p>Take a real habit or catchphrase and make it mechanical. Spend 1 Fandom Point to trigger it.</p></div>
+    <div class="loop-step"><h4>Loadout</h4><p>Three things you actually carry, reskinned with a multiverse twist. Usable once per Zone.</p></div>
+    <div class="loop-step"><h4>The Flaw</h4><p>One real, harmless quirk that complicates scenes. When it bites you, you earn a Fandom Point.</p></div>
+  </div>
+</section>
+
+<section id="economy">
+  <p class="kicker">Currencies</p>
+  <h2 class="head">Fandom Points &amp; Crossover Chips</h2>
+  <p class="section-intro">Two meta-currencies keep the tone light and the crossovers rewarding.</p>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h3 style="font-family:var(--font-display); margin-top:0;">Fandom Points</h3>
+      <p style="color:var(--ink-soft);">Earned for a landed pun, a good reference, playing your Flaw, or a genuinely funny bit. The GM hands these out on the spot.</p>
+      <p style="color:var(--ink-soft); margin-bottom:0;"><strong style="color:var(--ink);">Spend 1 to:</strong> cancel a loss into a draw (Plot Armor), reframe the scene's genre for one beat (Genre Shift, once per session), or cash in a callback for a free Edge Token.</p>
+    </div>
+    <div class="card">
+      <h3 style="font-family:var(--font-display); margin-top:0;">Crossover Chips</h3>
+      <p style="color:var(--ink-soft);">Earned when the party combines tools or tropes from two different Zones in one clever move.</p>
+      <p style="color:var(--ink-soft); margin-bottom:0;"><strong style="color:var(--ink);">Spend 1 to:</strong> borrow another Zone's signature power for a scene, or punch a shortcut portal straight between two Zones.</p>
+    </div>
+  </div>
+</section>
+
+<section id="multiverse">
+  <p class="kicker">Setting</p>
+  <h2 class="head">The Nexus &amp; the Zones</h2>
+  <p class="section-intro">The party's home base is the Nexus — a liminal rest-stop between every story ever told, run by a recurring Concierge NPC who hands out hooks. From there, the party dives into Zones: original pastiche worlds you can reskin live with whatever franchises your table actually loves, so nothing here goes stale.</p>
+
+  <div class="grid grid-2">
+    <div class="zone-card"><span class="tag">SPACE OPERA</span><h3>The Far Reach</h3><p>Star-hopping rebellions, ancient orders, a chosen-one problem nobody asked for.</p><p class="twist"><strong>Zone Twist:</strong> Bravado Throwdowns get +1 auto-Edge — everyone's dramatic out here.</p></div>
+    <div class="zone-card"><span class="tag">NOIR</span><h3>Last Exit City</h3><p>Perpetual rain, a case that's really three cases, everyone's lying about something small.</p><p class="twist"><strong>Zone Twist:</strong> Ties always favor whoever asked the last question.</p></div>
+    <div class="zone-card"><span class="tag">HIGH FANTASY</span><h3>The Hollow Realms</h3><p>Prophecies, taverns, a McGuffin everyone insists is destiny.</p><p class="twist"><strong>Zone Twist:</strong> Loadout items can be "enchanted" once per Zone for a free Anxiety.</p></div>
+    <div class="zone-card"><span class="tag">KAIJU</span><h3>Skyline Break</h3><p>Giant monsters, city-scale stakes, everything is somehow everyone's problem.</p><p class="twist"><strong>Zone Twist:</strong> All Brawn Throwdowns are automatically Showdown tier.</p></div>
+    <div class="zone-card"><span class="tag">SPY THRILLER</span><h3>Blacklight Protocol</h3><p>Gadgets, double agents, a countdown that's always visible somewhere.</p><p class="twist"><strong>Zone Twist:</strong> Losing a Brains Throwdown reveals a twist instead of just failing.</p></div>
+    <div class="zone-card"><span class="tag">SITCOM</span><h3>Flatshare 4B</h3><p>Low stakes, high embarrassment, misunderstandings that spiral in real time.</p><p class="twist"><strong>Zone Twist:</strong> Every loss is funny, never harmful — reframe consequences as social fallout.</p></div>
+  </div>
+
+  <div class="card" style="margin-top:20px; border-left:4px solid var(--yellow);">
+    <strong style="font-family:var(--font-display);">The Canon Break:</strong>
+    <span style="color:var(--ink-soft);"> your campaign's throughline. A villain or artifact starts bleeding between Zones partway through the campaign, tying every dive together and building toward a Legendary Clash finale that pulls elements from every Zone the party has visited.</span>
+  </div>
+</section>
+
+<section id="loop">
+  <p class="kicker">Running a Session</p>
+  <h2 class="head">The Session Loop</h2>
+  <p class="section-intro">Same shape every time, so the table always knows where they are.</p>
+  <div class="loop">
+    <div class="loop-step"><h4>Cold Open</h4><p>Two-minute "previously on..." plus today's hook.</p></div>
+    <div class="loop-step"><h4>Hub Scene</h4><p>Banter, shopping, rumors at the Nexus. Light Throwdowns only.</p></div>
+    <div class="loop-step"><h4>Zone Dive</h4><p>Portal opens. Narrate the arrival, establish the Zone Twist.</p></div>
+    <div class="loop-step"><h4>Scene Loop</h4><p>Narrate → Declare → Set Stakes → Throwdown → Narrate. Repeat.</p></div>
+    <div class="loop-step"><h4>Midpoint Twist</h4><p>The Canon Break complication surfaces.</p></div>
+    <div class="loop-step"><h4>Showdown</h4><p>Tier 3 or 4 Throwdown vs. the Zone's boss.</p></div>
+    <div class="loop-step"><h4>Credits Scene</h4><p>Epilogue beat, award points, drop a post-credits hook.</p></div>
+  </div>
+</section>
+
+<section id="gmtools">
+  <p class="kicker">Running the Game</p>
+  <h2 class="head">GM Toolkit</h2>
+  <p class="section-intro">Two quick generators for when you need a name or a nudge mid-scene. Click for a fresh result — nothing here is tracked or saved.</p>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h3 style="font-family:var(--font-display); margin-top:0; font-size:1rem;">Villain Name Generator</h3>
+      <button class="btn" id="villainBtn">Generate a villain</button>
+      <div class="generator-out" id="villainOut">Click to conjure a menace.</div>
+    </div>
+    <div class="card">
+      <h3 style="font-family:var(--font-display); margin-top:0; font-size:1rem;">Complication Prompt</h3>
+      <button class="btn secondary" id="compBtn">Give me a twist</button>
+      <div class="generator-out" id="compOut">Click when a scene needs a shove.</div>
+    </div>
+  </div>
+</section>
+
+<section id="sheet">
+  <p class="kicker">Print or Save</p>
+  <h2 class="head">Character Sheet</h2>
+  <p class="section-intro">Fill this out live. It saves automatically in your browser, just on this device — nobody else at the table sees it unless you show them.</p>
+
+  <div class="card">
+    <div class="sheet-field">
+      <label for="f-name">Name</label>
+      <input id="f-name" type="text" placeholder="You, but with a Zone-appropriate flourish">
+      <p style="color:var(--ink-soft); font-size:.82rem; margin:6px 0 0;">Use your Discord name or whatever you'd like people to call you. Understand that picking a weird name will have consequences on the story.</p>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="sheet-field">
+        <label>Height</label>
+        <div style="display:flex; gap:10px;">
+          <select id="f-height-ft" style="width:auto; padding: 9px 11px; border-radius: 8px; border: 1px solid var(--panel-edge); background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: .95rem;">
+            <option value="">Feet</option>
+            <option value="3">3'</option>
+            <option value="4">4'</option>
+            <option value="5">5'</option>
+            <option value="6">6'</option>
+            <option value="7">7'</option>
+          </select>
+          <select id="f-height-in" style="width:auto; padding: 9px 11px; border-radius: 8px; border: 1px solid var(--panel-edge); background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: .95rem;">
+            <option value="">Inches</option>
+            <option value="0">0"</option><option value="1">1"</option><option value="2">2"</option><option value="3">3"</option>
+            <option value="4">4"</option><option value="5">5"</option><option value="6">6"</option><option value="7">7"</option>
+            <option value="8">8"</option><option value="9">9"</option><option value="10">10"</option><option value="11">11"</option>
+          </select>
+        </div>
+      </div>
+      <div class="sheet-field">
+        <label for="f-build">Build</label>
+        <select id="f-build">
+          <option value="">— choose one —</option>
+          <option value="Lean">Lean</option>
+          <option value="Chonk">Chonk</option>
+          <option value="Heckin Chonk">Heckin Chonk</option>
+          <option value="Mega Chonk">Mega Chonk</option>
+          <option value="Oh Lawd he Comin'">Oh Lawd he Comin'</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid grid-3">
+      <div class="sheet-field">
+        <label>Brawn</label>
+        <div class="dot-row" data-stat="brawn">
+          <button class="dot" data-val="1"></button><button class="dot" data-val="2"></button><button class="dot" data-val="3"></button><button class="dot" data-val="4"></button>
+        </div>
+      </div>
+      <div class="sheet-field">
+        <label>Brains</label>
+        <div class="dot-row" data-stat="brains">
+          <button class="dot" data-val="1"></button><button class="dot" data-val="2"></button><button class="dot" data-val="3"></button><button class="dot" data-val="4"></button>
+        </div>
+      </div>
+      <div class="sheet-field">
+        <label>Bravado</label>
+        <div class="dot-row" data-stat="bravado">
+          <button class="dot" data-val="1"></button><button class="dot" data-val="2"></button><button class="dot" data-val="3"></button><button class="dot" data-val="4"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet-field"><label for="f-sig">Two real world skills</label><textarea id="f-sig" placeholder="Made mechanical — e.g. 'I can parallel park anything' or 'I always know the shortcut'"></textarea></div>
+
+    <div class="grid grid-2">
+      <div class="sheet-field">
+        <label for="f-bagtype">Backpack Type</label>
+        <select id="f-bagtype">
+          <option value="">— choose one —</option>
+          <option value="Bag">Bag</option>
+          <option value="Suitcase">Suitcase</option>
+          <option value="Rucksack">Rucksack</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="sheet-field"><label for="f-bagother">If Other, what is it?</label><input id="f-bagother" type="text" placeholder="e.g. Tote, fanny pack, briefcase"></div>
+    </div>
+
+    <div class="sheet-field">
+      <label for="f-loadout">Items in Luggage</label>
+      <p style="color:var(--ink-soft); font-size:.82rem; margin:0 0 6px;">Everyday items you'd actually have in the bag you picked above — nothing exotic yet.</p>
+      <textarea id="f-loadout" placeholder="e.g. Keys, a charger, a half-empty water bottle"></textarea>
+    </div>
+
+    <div class="sheet-field"><label for="f-enh">What phone do you use?</label><textarea id="f-enh" placeholder="Flavor only — no numbers here"></textarea></div>
+
+    <div class="save-row">
+      <button class="btn" id="saveBtn">Save sheet</button>
+      <button class="btn secondary" id="clearBtn">Clear</button>
+      <button class="btn secondary" id="pdfBtn">Download as PDF</button>
+      <span class="save-msg" id="saveMsg"></span>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>Canon Event — a homebrew tabletop framework. Reskin every Zone with whatever your table loves.</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+(function() {
+  var villains = {
+    titles: ["The", "Doctor", "Captain", "Lord", "Agent", "Madame", "The Last"],
+    adjectives: ["Crimson", "Static", "Hollow", "Velvet", "Rust", "Glitch", "Neon", "Paper", "Iron", "Quiet"],
+    nouns: ["Concierge", "Cartographer", "Understudy", "Auditor", "Usher", "Collector", "Ghostwriter", "Regent", "Archivist", "Stagehand"]
+  };
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+  var villainBtn = document.getElementById('villainBtn');
+  var villainOut = document.getElementById('villainOut');
+  if (villainBtn) {
+    villainBtn.addEventListener('click', function() {
+      var name = pick(villains.titles) + " " + pick(villains.adjectives) + " " + pick(villains.nouns);
+      villainOut.textContent = name;
+    });
+  }
+
+  var complications = [
+    "A friendly NPC from a completely different Zone shows up, badly lost.",
+    "The thing they're fighting for turns out to belong to someone sympathetic.",
+    "Their Genre License stops working for one scene — the rules of home don't apply here.",
+    "Two players' Loadout items react to each other in a way nobody planned.",
+    "The villain offers a deal that's actually reasonable.",
+    "A ticking clock nobody mentioned suddenly matters.",
+    "The Zone's rules glitch — describe it as a visible tear in the scenery.",
+    "An old NPC from an earlier Zone turns out to be involved after all.",
+    "The easy win requires leaving someone behind.",
+    "Everyone's Edge pool for one stat drains to zero, no explanation given yet."
+  ];
+  var compBtn = document.getElementById('compBtn');
+  var compOut = document.getElementById('compOut');
+  if (compBtn) {
+    compBtn.addEventListener('click', function() {
+      compOut.textContent = pick(complications);
+    });
+  }
+
+  // Character sheet: dots
+  document.querySelectorAll('.dot-row').forEach(function(row) {
+    row.addEventListener('click', function(e) {
+      if (!e.target.classList.contains('dot')) return;
+      var val = parseInt(e.target.getAttribute('data-val'), 10);
+      var dots = row.querySelectorAll('.dot');
+      dots.forEach(function(d, i) {
+        d.classList.toggle('filled', i < val);
+      });
+      row.setAttribute('data-current', val);
+    });
+  });
+
+  // Save / load via localStorage (per-viewer, this device only)
+  var KEY = 'canon-event-sheet-v1';
+  function getState() {
+    var state = {
+      name: document.getElementById('f-name').value,
+      bagType: document.getElementById('f-bagtype').value,
+      bagOther: document.getElementById('f-bagother').value,
+      heightFt: document.getElementById('f-height-ft').value,
+      heightIn: document.getElementById('f-height-in').value,
+      build: document.getElementById('f-build').value,
+      sig: document.getElementById('f-sig').value,
+      loadout: document.getElementById('f-loadout').value,
+      enh: document.getElementById('f-enh').value,
+      stats: {}
+    };
+    document.querySelectorAll('.dot-row').forEach(function(row) {
+      state.stats[row.getAttribute('data-stat')] = row.getAttribute('data-current') || 0;
+    });
+    return state;
+  }
+  function applyState(state) {
+    if (!state) return;
+    document.getElementById('f-name').value = state.name || '';
+    document.getElementById('f-bagtype').value = state.bagType || '';
+    document.getElementById('f-bagother').value = state.bagOther || '';
+    document.getElementById('f-height-ft').value = state.heightFt || '';
+    document.getElementById('f-height-in').value = state.heightIn || '';
+    document.getElementById('f-build').value = state.build || '';
+    document.getElementById('f-sig').value = state.sig || '';
+    document.getElementById('f-loadout').value = state.loadout || '';
+    document.getElementById('f-enh').value = state.enh || '';
+    document.querySelectorAll('.dot-row').forEach(function(row) {
+      var val = parseInt((state.stats || {})[row.getAttribute('data-stat')] || 0, 10);
+      var dots = row.querySelectorAll('.dot');
+      dots.forEach(function(d, i) { d.classList.toggle('filled', i < val); });
+      row.setAttribute('data-current', val);
+    });
+  }
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) applyState(JSON.parse(raw));
+    } catch (err) {
+      console.warn('Could not load saved sheet', err);
+    }
+  }
+  var saveMsg = document.getElementById('saveMsg');
+  var saveBtn = document.getElementById('saveBtn');
+  var clearBtn = document.getElementById('clearBtn');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', function() {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(getState()));
+        saveMsg.textContent = 'Saved to this browser.';
+      } catch (err) {
+        saveMsg.textContent = 'Could not save — storage unavailable.';
+      }
+      setTimeout(function() { saveMsg.textContent = ''; }, 2500);
+    });
+  }
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function() {
+      try { localStorage.removeItem(KEY); } catch (err) {}
+      applyState({ stats: {} });
+      saveMsg.textContent = 'Cleared.';
+      setTimeout(function() { saveMsg.textContent = ''; }, 2000);
+    });
+  }
+
+  // Download as PDF
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+  var pdfBtn = document.getElementById('pdfBtn');
+  if (pdfBtn) {
+    pdfBtn.addEventListener('click', function() {
+      if (typeof html2pdf === 'undefined') {
+        saveMsg.textContent = 'PDF tool failed to load — check your connection and try again.';
+        setTimeout(function() { saveMsg.textContent = ''; }, 3500);
+        return;
+      }
+      var state = getState();
+
+      function fieldBlock(label, value) {
+        var display = (value && String(value).trim()) ? escapeHtml(value) : '—';
+        return '<div style="margin-bottom:14px;">' +
+          '<div style="font-family:\'Space Grotesk\',Arial,sans-serif; font-weight:700; font-size:11px; color:#6C4AB6; text-transform:uppercase; letter-spacing:.04em; margin-bottom:3px;">' + escapeHtml(label) + '</div>' +
+          '<div style="font-size:14px; line-height:1.5; white-space:pre-wrap;">' + display + '</div></div>';
+      }
+      function dotsBlock(label, val, max) {
+        var filled = parseInt(val, 10) || 0;
+        var dots = '';
+        for (var i = 1; i <= max; i++) { dots += (i <= filled ? '\u25CF' : '\u25CB') + ' '; }
+        return '<div style="margin-bottom:14px;">' +
+          '<div style="font-family:\'Space Grotesk\',Arial,sans-serif; font-weight:700; font-size:11px; color:#6C4AB6; text-transform:uppercase; letter-spacing:.04em; margin-bottom:3px;">' + escapeHtml(label) + '</div>' +
+          '<div style="font-size:16px; letter-spacing:3px;">' + dots + '</div></div>';
+      }
+
+      var heightStr = (state.heightFt || state.heightIn) ? (state.heightFt || '\u2014') + "' " + (state.heightIn || '0') + '"' : '';
+      var bagStr = (state.bagType === 'Other' && state.bagOther) ? state.bagOther : state.bagType;
+
+      var container = document.createElement('div');
+      container.style.cssText = 'background:#ffffff; color:#181229; padding:32px; font-family:Karla,Arial,sans-serif; width:600px;';
+      container.innerHTML =
+        '<h1 style="font-family:\'Space Grotesk\',Arial,sans-serif; font-size:24px; margin:0 0 4px;">Canon Event \u2014 Character Sheet</h1>' +
+        '<div style="height:3px; background:#6C4AB6; width:60px; margin-bottom:22px;"></div>' +
+        fieldBlock('Name', state.name) +
+        fieldBlock('Height', heightStr) +
+        fieldBlock('Build', state.build) +
+        dotsBlock('Brawn', state.stats.brawn, 4) +
+        dotsBlock('Brains', state.stats.brains, 4) +
+        dotsBlock('Bravado', state.stats.bravado, 4) +
+        fieldBlock('Two Real World Skills', state.sig) +
+        fieldBlock('Backpack Type', bagStr) +
+        fieldBlock('Items in Luggage', state.loadout) +
+        fieldBlock('What Phone Do You Use?', state.enh);
+
+      document.body.appendChild(container);
+      var safeName = (state.name || 'character').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'character';
+
+      function cleanup() {
+        if (container.parentNode) container.parentNode.removeChild(container);
+      }
+
+      try {
+        html2pdf().set({
+          margin: 10,
+          filename: 'canon-event-' + safeName + '.pdf',
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        }).from(container).save().then(cleanup).catch(function(err) {
+          console.warn('PDF generation failed', err);
+          saveMsg.textContent = 'Could not generate PDF.';
+          setTimeout(function() { saveMsg.textContent = ''; }, 3000);
+          cleanup();
+        });
+      } catch (err) {
+        console.warn('PDF generation failed', err);
+        cleanup();
+      }
+    });
+  }
+
+  loadState();
+})();
+</script>
+
+</body>
+</html>
