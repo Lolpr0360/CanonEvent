@@ -332,8 +332,8 @@
       <tr><td>You lose</td><td>Failure — the tier's consequence applies.</td></tr>
     </table>
   </div>
-  <p class="section-intro" style="margin-bottom:16px;">Before the throw, the GM names the tier out loud — it sets how forgiving a Draw is and how much a Loss costs.</p>
-  <div class="table-wrap">
+  <p class="section-intro" style="margin-bottom:16px;">In a combat situation, before the throw, the GM can be asked the tier— it tells you how forgiving a Draw is and how much a Loss costs.</p>
+  <div class="table-wrap">	
     <table>
       <tr><th>Tier</th><th>Used for</th><th>On a Draw</th><th>On a Loss</th></tr>
       <tr><td><span class="pill">Quick Beat</span></td><td>Flavor actions, minor checks</td><td>Stalemate, no cost</td><td>Shrug it off, minor cost</td></tr>
@@ -344,15 +344,15 @@
   </div>
 
   <h3 style="font-family:var(--font-display); font-size:1.05rem; margin-top:34px;">Combat — Attack &amp; Defence</h3>
-  <p class="section-intro" style="margin-bottom:16px;">No dice in a fight. Combat splits into two different sequences depending on whether you're swinging or being swung at — each uses RPS against the GM.</p>
+  <p class="section-intro" style="margin-bottom:16px;">No dice in a fight. Combat splits into two different sequences depending on whether you're swinging or being swung at — each uses RPS against the GM. Note: Enemies attack together</p>
 
   <h4 style="font-family:var(--font-display); font-size:.95rem; margin:20px 0 8px;">When you attack</h4>
   <div class="table-wrap" style="margin-bottom:8px;">
     <table>
       <tr><th colspan="2" style="font-family:var(--font-display); font-weight:700; color:var(--ink);">Throw 1 — The Outcome Clash</th></tr>
-      <tr><td style="width:30%;">You win</td><td>Hit connects clean — full damage at the attack's Bite tier.</td></tr>
+      <tr><td style="width:30%;">You win</td><td>Hit connects clean — full damage based on weapon type.</td></tr>
       <tr><td>Draw</td><td>The enemy blocks, but takes partial damage — Tier 1, 'Tis But a Scratch.</td></tr>
-      <tr><td>You lose</td><td>The enemy counters or dodges — the GM's call. On a counter, their Bite tier lands on you automatically, no extra throw.</td></tr>
+      <tr><td>You lose</td><td>The enemy counters or dodges — the GM's call. On a counter, their attack triggers a defensive RPS.</td></tr>
     </table>
   </div>
   <p class="section-intro" style="margin:10px 0 20px; font-size:.9rem;">Throw 2 still applies exactly as below — run it whenever a hit actually landed (a Win, or the partial damage on a Draw). Skip it if the enemy fully dodges.</p>
@@ -377,14 +377,14 @@
   <div class="table-wrap" style="margin-bottom:20px;">
     <table>
       <tr><th colspan="2" style="font-family:var(--font-display); font-weight:700; color:var(--ink);">Defence Clash</th></tr>
-      <tr><td style="width:30%;">You win</td><td>Your choice: Counter Attack (your Bite tier lands on them automatically, no extra throw) or Dodge (you take nothing).</td></tr>
-      <tr><td>Draw</td><td>You stand your ground and take the hit at full Bite tier — a shield or Enhancement on that zone absorbs it first, if you have one.</td></tr>
-      <tr><td>You lose</td><td>You get hit — full Bite tier, GM's call on location.</td></tr>
+      <tr><td style="width:30%;">You win</td><td>Your choice: Counter Attack (Imeddiately get an attack RPS or GMs decision on outcome) or Dodge (you take no damage).</td></tr>
+      <tr><td>Draw</td><td>You stand your ground and take the hit — a shield or Enhancement on that zone absorbs it first, if you have one.</td></tr>
+      <tr><td>You lose</td><td>You get hit — full Damage, GM's call on location.</td></tr>
     </table>
   </div>
 
-  <h4 style="font-family:var(--font-display); font-size:.95rem; margin:24px 0 8px;">Bite &amp; damage</h4>
-  <p class="section-intro" style="margin-bottom:12px;">The GM sets an attack's Bite before the Clash — a jab starts at Tier 1, a heavy weapon at Tier 3, something devastating at Tier 4. See <a href="#zones">Body Zones</a> for the full Wince Scale, and <a href="#gear">Enhancements</a> for how gear soaks a hit before the zone does.</p>
+  <h4 style="font-family:var(--font-display); font-size:.95rem; margin:24px 0 8px;">Weapon Type &amp; damage</h4>
+  <p class="section-intro" style="margin-bottom:12px;">The GM sets an attack's Weapon type before the Clash — Tier 1: blunt and light; Tier 2: Blunt and heavy; Tier 3: Sharp and Light; Tier 4: Sharp and Heavy; Tier 5: Projectile or just Sharp with pure luck See <a href="#zones">Body Zones</a> for the full Wince Scale, and <a href="#gear">Enhancements</a> for how gear soaks a hit before the zone does.</p>
 
   <div class="card" style="margin-bottom:24px; border-left:4px solid var(--yellow);">
     <strong style="font-family:var(--font-display);">Multiple zones at once:</strong>
@@ -430,7 +430,7 @@
   <h3 style="font-family:var(--font-display); font-size:1.05rem;">Zone Pools &amp; Effects</h3>
   <div class="table-wrap" style="margin-bottom:20px;">
     <table>
-      <tr><th>Zone</th><th>Pool</th><th>At 0 HP</th></tr>
+      <tr><th>Zone</th><th>Approx Pool</th><th>At Full Damage</th></tr>
       <tr><td>Torso</td><td>10</td><td>Downed — starts the Fade Clock (below)</td></tr>
       <tr><td>Head</td><td>6</td><td>Dazed &amp; Out — unconscious immediately, no throw needed</td></tr>
       <tr><td>Each Arm</td><td>6</td><td>Disabled, drops anything held; Disadvantage on anything needing it</td></tr>
@@ -441,15 +441,15 @@
   </div>
 
   <h3 style="font-family:var(--font-display); font-size:1.05rem;">The Wince Scale</h3>
-  <p class="section-intro" style="margin-bottom:12px;">Which zone gets hit is decided by the Location Clash in <a href="#engine">Resolution</a>. How much it costs is decided by this scale — apply the tier that matches the attack's Bite on a Win, or Tier 1 on a Draw.</p>
+  <p class="section-intro" style="margin-bottom:12px;">Which zone gets hit is decided by the Location Clash in <a href="#engine">Resolution</a>. How much it costs is decided by this scale — apply the tier that matches the attack's weapon type on a Win, or Tier 1 on a Draw.</p>
   <div class="table-wrap" style="margin-bottom:24px;">
     <table>
-      <tr><th>Tier</th><th>Name</th><th>HP lost</th></tr>
-      <tr><td>1</td><td>'Tis But a Scratch</td><td>1</td></tr>
-      <tr><td>2</td><td>Ha! That Tickled</td><td>2</td></tr>
-      <tr><td>3</td><td>Ooh, That Stung</td><td>3</td></tr>
-      <tr><td>4</td><td>Okay, That's Gonna Leave a Mark</td><td>4</td></tr>
-      <tr><td>5</td><td>Well, That Wasn't There a Second Ago</td><td>5–6</td></tr>
+      <tr><th>Tier</th><th>Name</th></tr>
+      <tr><td>1</td><td>'Tis But a Scratch</td></tr>
+      <tr><td>2</td><td>Ha! That Tickled</td></tr>
+      <tr><td>3</td><td>Ooh, That Stung</td><</tr>
+      <tr><td>4</td><td>Okay, That's Gonna Leave a Mark</td><</tr>
+      <tr><td>5</td><td>Well, That Wasn't There a Second Ago</td></tr>
     </table>
   </div>
 
@@ -464,7 +464,7 @@
   </div>
   <div class="card" style="margin-top:14px; border-left:4px solid var(--yellow);">
     <strong style="font-family:var(--font-display);">Optional Harsh Mode:</strong>
-    <span style="color:var(--ink-soft);"> if your table wants real stakes, a second Torso-zero within the same story arc is permanent instead of a Fade Clock.</span>
+    <span style="color:var(--ink-soft);"> if your table wants real stakes, Players can be executed by enemies to be perma-killed.</span>
   </div>
 </section>
 
@@ -521,10 +521,11 @@
 
   <div class="loop">
     <div class="loop-step"><h4>The You Translation</h4><p>Distribute 8 dots across Brawn / Brains / Bravado (1–4 each, none at zero). Answer honestly, not aspirationally.</p></div>
-    <div class="loop-step"><h4>Genre License</h4><p>Pick your home genre — your comfort zone. There, you get +1 free Edge Token of any type per scene.</p></div>
-    <div class="loop-step"><h4>Signature Move</h4><p>Take a real habit or catchphrase and make it mechanical. Spend 1 Fandom Point to trigger it.</p></div>
-    <div class="loop-step"><h4>Loadout</h4><p>Three things you actually carry, reskinned with a multiverse twist. Usable once per Zone.</p></div>
-    <div class="loop-step"><h4>The Flaw</h4><p>One real, harmless quirk that complicates scenes. When it bites you, you earn a Fandom Point.</p></div>
+    <div class="loop-step"><h4>Dimensions</h4><p>Just your height is fine. Not sure what you were thinking.</p></div>
+	<div class="loop-step"><h4>Build</h4><p>What do you look like?</p></div>
+    <div class="loop-step"><h4>2 Real World Skills</h4><p>Take a real habit or catchphrase and make it mechanical. Spend 1 Fandom Point to trigger it if feasible.</p></div>
+    <div class="loop-step"><h4>Loadout</h4><p>Stuff you could fit into a baggage of your choice.</p></div>
+    <div class="loop-step"><h4>The Phone</h4><p>Your technically most used piece of tech.</p></div>
   </div>
 </section>
 
@@ -536,67 +537,13 @@
   <div class="grid grid-2">
     <div class="card">
       <h3 style="font-family:var(--font-display); margin-top:0;">Fandom Points</h3>
-      <p style="color:var(--ink-soft);">Earned for a landed pun, a good reference, playing your Flaw, or a genuinely funny bit. The GM hands these out on the spot.</p>
-      <p style="color:var(--ink-soft); margin-bottom:0;"><strong style="color:var(--ink);">Spend 1 to:</strong> cancel a loss into a draw (Plot Armor), reframe the scene's genre for one beat (Genre Shift, once per session), or cash in a callback for a free Edge Token.</p>
+      <p style="color:var(--ink-soft);">Earned for a landed pun, a good reference, playing your Flaw, or a genuinely funny bit. The GM hands these out on the spot. Other Players can vote on it but GM call is final.</p>
+      <p style="color:var(--ink-soft); margin-bottom:0;"><strong style="color:var(--ink);">Spend 1 to:</strong> cancel a loss into a draw (Plot Armor), ask the GM a META question (secretly), or cash in a callback for a free Edge Token.</p>
     </div>
     <div class="card">
       <h3 style="font-family:var(--font-display); margin-top:0;">Crossover Chips</h3>
       <p style="color:var(--ink-soft);">Earned when the party combines tools or tropes from two different Zones in one clever move.</p>
       <p style="color:var(--ink-soft); margin-bottom:0;"><strong style="color:var(--ink);">Spend 1 to:</strong> borrow another Zone's signature power for a scene, or punch a shortcut portal straight between two Zones.</p>
-    </div>
-  </div>
-</section>
-
-<section id="multiverse">
-  <p class="kicker">Setting</p>
-  <h2 class="head">The Nexus &amp; the Zones</h2>
-  <p class="section-intro">The party's home base is the Nexus — a liminal rest-stop between every story ever told, run by a recurring Concierge NPC who hands out hooks. From there, the party dives into Zones: original pastiche worlds you can reskin live with whatever franchises your table actually loves, so nothing here goes stale.</p>
-
-  <div class="grid grid-2">
-    <div class="zone-card"><span class="tag">SPACE OPERA</span><h3>The Far Reach</h3><p>Star-hopping rebellions, ancient orders, a chosen-one problem nobody asked for.</p><p class="twist"><strong>Zone Twist:</strong> Bravado Throwdowns get +1 auto-Edge — everyone's dramatic out here.</p></div>
-    <div class="zone-card"><span class="tag">NOIR</span><h3>Last Exit City</h3><p>Perpetual rain, a case that's really three cases, everyone's lying about something small.</p><p class="twist"><strong>Zone Twist:</strong> Ties always favor whoever asked the last question.</p></div>
-    <div class="zone-card"><span class="tag">HIGH FANTASY</span><h3>The Hollow Realms</h3><p>Prophecies, taverns, a McGuffin everyone insists is destiny.</p><p class="twist"><strong>Zone Twist:</strong> Loadout items can be "enchanted" once per Zone for a free Anxiety.</p></div>
-    <div class="zone-card"><span class="tag">KAIJU</span><h3>Skyline Break</h3><p>Giant monsters, city-scale stakes, everything is somehow everyone's problem.</p><p class="twist"><strong>Zone Twist:</strong> All Brawn Throwdowns are automatically Showdown tier.</p></div>
-    <div class="zone-card"><span class="tag">SPY THRILLER</span><h3>Blacklight Protocol</h3><p>Gadgets, double agents, a countdown that's always visible somewhere.</p><p class="twist"><strong>Zone Twist:</strong> Losing a Brains Throwdown reveals a twist instead of just failing.</p></div>
-    <div class="zone-card"><span class="tag">SITCOM</span><h3>Flatshare 4B</h3><p>Low stakes, high embarrassment, misunderstandings that spiral in real time.</p><p class="twist"><strong>Zone Twist:</strong> Every loss is funny, never harmful — reframe consequences as social fallout.</p></div>
-  </div>
-
-  <div class="card" style="margin-top:20px; border-left:4px solid var(--yellow);">
-    <strong style="font-family:var(--font-display);">The Canon Break:</strong>
-    <span style="color:var(--ink-soft);"> your campaign's throughline. A villain or artifact starts bleeding between Zones partway through the campaign, tying every dive together and building toward a Legendary Clash finale that pulls elements from every Zone the party has visited.</span>
-  </div>
-</section>
-
-<section id="loop">
-  <p class="kicker">Running a Session</p>
-  <h2 class="head">The Session Loop</h2>
-  <p class="section-intro">Same shape every time, so the table always knows where they are.</p>
-  <div class="loop">
-    <div class="loop-step"><h4>Cold Open</h4><p>Two-minute "previously on..." plus today's hook.</p></div>
-    <div class="loop-step"><h4>Hub Scene</h4><p>Banter, shopping, rumors at the Nexus. Light Throwdowns only.</p></div>
-    <div class="loop-step"><h4>Zone Dive</h4><p>Portal opens. Narrate the arrival, establish the Zone Twist.</p></div>
-    <div class="loop-step"><h4>Scene Loop</h4><p>Narrate → Declare → Set Stakes → Throwdown → Narrate. Repeat.</p></div>
-    <div class="loop-step"><h4>Midpoint Twist</h4><p>The Canon Break complication surfaces.</p></div>
-    <div class="loop-step"><h4>Showdown</h4><p>Tier 3 or 4 Throwdown vs. the Zone's boss.</p></div>
-    <div class="loop-step"><h4>Credits Scene</h4><p>Epilogue beat, award points, drop a post-credits hook.</p></div>
-  </div>
-</section>
-
-<section id="gmtools">
-  <p class="kicker">Running the Game</p>
-  <h2 class="head">GM Toolkit</h2>
-  <p class="section-intro">Two quick generators for when you need a name or a nudge mid-scene. Click for a fresh result — nothing here is tracked or saved.</p>
-
-  <div class="grid grid-2">
-    <div class="card">
-      <h3 style="font-family:var(--font-display); margin-top:0; font-size:1rem;">Villain Name Generator</h3>
-      <button class="btn" id="villainBtn">Generate a villain</button>
-      <div class="generator-out" id="villainOut">Click to conjure a menace.</div>
-    </div>
-    <div class="card">
-      <h3 style="font-family:var(--font-display); margin-top:0; font-size:1rem;">Complication Prompt</h3>
-      <button class="btn secondary" id="compBtn">Give me a twist</button>
-      <div class="generator-out" id="compOut">Click when a scene needs a shove.</div>
     </div>
   </div>
 </section>
@@ -609,8 +556,7 @@
   <div class="card">
     <div class="sheet-field">
       <label for="f-name">Name</label>
-      <input id="f-name" type="text" placeholder="You, but with a Zone-appropriate flourish">
-      <p style="color:var(--ink-soft); font-size:.82rem; margin:6px 0 0;">Use your Discord name or whatever you'd like people to call you. Understand that picking a weird name will have consequences on the story.</p>
+      <input id="f-name" type="text" placeholder="Use your Discord name or whatever you'd like people to call you.">
     </div>
 
     <div class="grid grid-2">
@@ -685,8 +631,7 @@
 
     <div class="sheet-field">
       <label for="f-loadout">Items in Luggage</label>
-      <p style="color:var(--ink-soft); font-size:.82rem; margin:0 0 6px;">Everyday items you'd actually have in the bag you picked above — nothing exotic yet.</p>
-      <textarea id="f-loadout" placeholder="e.g. Keys, a charger, a half-empty water bottle"></textarea>
+      <textarea id="f-loadout" placeholder="Everyday items you'd actually have in the bag you picked above"></textarea>
     </div>
 
     <div class="sheet-field"><label for="f-enh">What phone do you use?</label><textarea id="f-enh" placeholder="Flavor only — no numbers here"></textarea></div>
