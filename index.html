@@ -830,7 +830,7 @@
         html2pdf().set({
           margin: 10,
           filename: 'canon-event-' + safeName + '.pdf',
-          html2canvas: { scale: 2 },
+          html2canvas: { scale: 2,  scrollX: 0, scrollY: 0 },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         }).from(container).save().then(cleanup).catch(function(err) {
           console.warn('PDF generation failed', err);
